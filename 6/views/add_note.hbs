@@ -1,0 +1,47 @@
+    <div class="container">
+        <form id="myForm">
+            <div class="form_item">
+                <label>Owner of note:</label>
+                <input type="text" id="owner" name="owner">
+            </div>
+
+            <div class="form_item">
+                <label>Title of the note:</label>
+                <input type="text" id="title" name="title">
+            </div>
+
+            <div class="form_item">
+                <label>Message:</label>
+                <textarea id="message" name="message"></textarea>
+            </div>
+            <button type="submit"> Add note </button>
+        </form>
+
+    </div>
+
+<script>
+
+//Vamos usar o JQUERY- we are catch the form, and will be listening for the submit
+// Then we get an event, whenever we made a form the default behavior is to reload the page, so we can catch this event
+$('#myForm').on('submit'(e)=>){
+    e.preventDefault(); //Um standard
+
+]//We have the Data
+
+    const jsonData = {
+        owner: $['#owner'].val(),
+        title: $['#title'].val(),
+        message: $['#message'].val(),
+    }
+
+    //aqui estamos chamando o ajax- Here we are doing a post request
+    $.ajax({
+        type:'POST',
+        url:'/api/add_note',
+        error:()=>{
+            alert('Problem')
+        }
+    })
+})
+
+</script>
