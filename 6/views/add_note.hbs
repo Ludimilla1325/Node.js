@@ -20,28 +20,54 @@
     </div>
 
 <script>
-
-//Vamos usar o JQUERY- we are catch the form, and will be listening for the submit
-// Then we get an event, whenever we made a form the default behavior is to reload the page, so we can catch this event
-$('#myForm').on('submit'(e)=>){
-    e.preventDefault(); //Um standard
-
-]//We have the Data
+/*
+const callback = (element) => {
+     element.preventDefault()
 
     const jsonData = {
-        owner: $['#owner'].val(),
-        title: $['#title'].val(),
-        message: $['#message'].val(),
-    }
+        owner: $('#owner').val(),
+        title: $('#title').val(),
+        message: $('#message').val(),
+    };
+    console.log(jsonData)
 
-    //aqui estamos chamando o ajax- Here we are doing a post request
-    $.ajax({
+$.ajax({
         type:'POST',
         url:'/api/add_note',
         error:()=>{
             alert('Problem')
         }
     })
+    
+
+};
+
+*/
+//Vamos usar o JQUERY- we are catch the form, and will be listening for the submit
+// Then we get an event, whenever we made a form the default behavior is to reload the page, so we can catch this event
+$('#myForm').on('submit', (element) => {
+     element.preventDefault()
+
+    const jsonData = {
+        owner: $('#owner').val(),
+        title: $('#title').val(),
+        message: $('#message').val(),
+    };
+    console.log(jsonData)
+//ajaz utiliza o método XMLHTttpRequest para fazer requisições assincronas, Acessa uma determinada URL
+$.ajax({
+        type:'POST',
+        url:'/api/add_note',
+        data:JSON.stringify(jsonData),
+        contentType:'application/json',
+        sucess:(data,status)=>{
+            window.location.href= "/";
+        },
+        error:()=>{
+            alert('Problem')
+        }
+    })
+    
 })
 
 </script>

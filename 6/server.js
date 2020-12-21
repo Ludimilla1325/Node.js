@@ -17,9 +17,20 @@ app.set('view engine', 'hbs')
 app.use("/css", express.static(__dirname + '/public/css'))
 const jsonParse = bodyParser.json();
 
-//GET
+//GET - irá mostrar na tela os notes
 app.get('/',(req, res) =>{
-    res.render('home')
+    res.render('home');
+    /*fetch ('http://localhost:3000/messages')
+        .then(response =>{
+            response.json().then(json =>{
+                res.render('home', {
+                    articles:json
+                })
+            })
+        })
+        .catch(error => {
+            console.log(error)
+        }) */
 })
 app.get('/add_note',(req,res)=>{
     res.render('add_note')
@@ -29,21 +40,21 @@ app.get('/add_note',(req,res)=>{
 //POST 
 //jsonParse gonna take the information and give it back to us
 app.post('/api/add_note',jsonParse,(req,res) =>{
- 
-   fetch('http://localhost:3004/messages',{
-   method:'POST',  
-   body:JSON.stringify(req.body),
-   headers:{
-       'Content-Type':'aplication/json'
-   }  
-   }).then((response)=>{ //Para ver se está funcionando, podemos enviar uma response para o webserver
-    res.status(200).send()
-   })
-   console.log(req.body)
+
+    fetch('http://localhost:3000/messages',{
+        method:'POST',  
+        body:JSON.stringify(req.body),
+        headers:{
+            'Content-Type':'aplication/json'
+        }  
+    }).then((response)=>{ //Para ver se está funcionando, podemos enviar uma response para o webserver
+       console.log(response)
+        // res.status(200).send()
+    })
 })
 
 //Setting up server
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3002;
 app.listen(port,() =>{
     console.log(`server up on port ${port}`)
 })
