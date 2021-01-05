@@ -25,4 +25,35 @@
     </div>
 
 </body>
+
+<script>
+
+    $.ajax({
+        type:"GET",
+        URL:"http://localhost:3005/api/books",
+        success:(data,status,xhr) =>{
+            let template = ``;
+            data.map((item)=>{
+                template += `
+                <a class="book_item" href="book_edit.html?book_id=${item._id}">
+                    <div class="item name">
+                        <span>Book name:</span> ${item.name}
+                    </div>
+                    <div class="item author">
+                        <span>Book author:</span> ${item.author}
+                    </div>
+                    <div class="item price">
+                        <span>Book price:</span> ${item.price}
+                    </div>
+                 </a>
+
+                `
+            });
+            $('.books_container').append(template)
+        },
+        error:(xhr)=>{
+            alert('Something is wrong.. ohh no')
+        }   
+    })
+</script>
 </html>

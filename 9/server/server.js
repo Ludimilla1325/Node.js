@@ -46,7 +46,7 @@ app.post('/api/add/books',(req,res)=>{
 
 //GET
 app.get('/api/stores',(req,res)=>{
-    console.log(req.body)
+    //console.log(req.body)
 
     Store.find((err,doc)=>{
         if(err) res.status(400).send(err);
@@ -54,6 +54,13 @@ app.get('/api/stores',(req,res)=>{
     })
 })
 
+app.get('/api/books',(req,res)=>{
+    
+    Book.find((err,doc)=>{
+        if(err) res.status(400).send(err);
+        res.send(doc)
+    })
+})
 
 const port= process.env.PORT || 3005;
 app.listen(port,()=>{
