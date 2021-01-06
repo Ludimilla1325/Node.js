@@ -55,10 +55,39 @@ app.get('/api/stores',(req,res)=>{
 })
 
 app.get('/api/books',(req,res)=>{
-    
-    Book.find((err,doc)=>{
+
+    let limit = req.query.limit ? parseInt(req.query.limit) : 10;
+    let order = req.query.ord ? req.query.ord : "asc"
+
+
+    Book.find().sort({_id:order}).limit(limit).exec((err,doc)=>{
         if(err) res.status(400).send(err);
         res.send(doc)
+    })
+})
+
+//To edit book
+app.get('/api/books/:id',(req,res)=>{
+    Book.findById(req.params.id,(err,doc)=>{
+        if(err) res.status(400).send(err);
+        res.send(doc)
+    })
+})
+
+//PATCH
+app.patch('/api/add/books/:id',(req,res)=>{
+    Book.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true},(err,doc)=>{
+        if(err) res.status(400).send(err);
+        res.send(doc)
+    })
+})
+
+//DELETE
+app.delete('/api/delete/books/:id',(req,res)=>{
+    
+    Book.findByIdAndRemove(req.params.id,(err,doc)=>{
+        if(err) res.status(400).send(err);
+        res.status(200).send();
     })
 })
 
