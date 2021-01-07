@@ -25,7 +25,17 @@ app.post('/api/user',(req,res)=>{
         if(err) res.status(400).send(err); // err-retorna se há algum erro; doc- retorna o body 
         res.status(200).send(doc)
     })
+});
+
+app.post('/api/user/login',(req,res)=>{
+    User.findOne({'email':req.body.email},(err,user)=>{
+        if(!user) res.json({message:'Auth failed. User not found'});
+
+        res.status(200).send(user)
+    })
 })
+
+
 app.listen(port,()=>{
     console.log(`started on port ${port}`)
 })
