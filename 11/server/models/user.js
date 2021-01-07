@@ -36,6 +36,9 @@ if (user.isModified('password')){ //isModified is to check if the password or th
 
 })
 
+//comparePassword= whetever name can be // cb- callback
+
+
 //Include User to the schema
 const User = mongoose.model('User', userSchema);
 module.exports = {User}
