@@ -26,7 +26,7 @@ app.post('/api/add/store',(req,res)=>{
 
     store.save((err,doc)=>{
         if(err) res.status(400).send(err);
-        res.status(200);
+        res.sendStatus(200);
     })
 });
 
@@ -38,9 +38,10 @@ app.post('/api/add/books',(req,res)=>{
         price:req.body.price,
         stores:req.body.stores,
     });
+
     book.save((err,doc)=>{
         if(err) res.status(400).send(err);
-        res.status(200);
+        res.sendStatus(200);
     })
 })
 
