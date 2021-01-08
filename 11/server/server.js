@@ -13,6 +13,7 @@ mongoose.connect('mongodb://localhost:27017/auth')
 
 //Require the module
 const {User} = require('./models/user');
+const {auth} = require ('./middleware/auth');
 app.use(bodyParser.json());
 
 //POST
@@ -36,7 +37,7 @@ app.post('/api/user',(req,res)=>{
 app.post('/api/user/login',(req,res)=>{
     User.findOne({'email':req.body.email},(err,user)=>{ //user has all the methods we r using in schema
         if(!user) res.json({message:'Auth failed. User not found'});
-    //res.status(200).send(user)
+    //res.status(200).send(user) // in real life we dont send back the user data 
 
     // bcrypt.compare(req.body.password,user.password, (err,isMatch) =>{ //arguments : 1- passowrd user is passing,2- Hash password, 3- callback(err,isMatch{boolean})
     //     if (err) throw err;
@@ -59,18 +60,11 @@ app.post('/api/user/login',(req,res)=>{
     })
 })
 
+
 //GET
-app.get('/user/profile',(req,res)=>{
-    //res.status(200).send('working')
-    const token = req.header('x-token');
-
-    User.findByToken(token,(err,user)=>{
-        if (err) throw err;
-        if(!user) return res .status(400).send()
-
-        res.status(200).send(user) // in real life we dont send back the user data 
-    })
-})
+app.get('/user/profile',auth,(req,res)=>{
+    res.status(200).send(req.token);
+   })
 
 app.listen(port,()=>{
     console.log(`started on port ${port}`)
