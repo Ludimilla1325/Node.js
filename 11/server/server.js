@@ -30,18 +30,26 @@ app.post('/api/user',(req,res)=>{
 
 //To check if email is in database or not
 app.post('/api/user/login',(req,res)=>{
-    User.findOne({'email':req.body.email},(err,user)=>{
+    User.findOne({'email':req.body.email},(err,user)=>{ //user has all the methods we r using in schema
         if(!user) res.json({message:'Auth failed. User not found'});
     //res.status(200).send(user)
 
-    bcrypt.compare(req.body.password,user.password, (err,isMatch) =>{ //arguments : 1- passowrd user is passing,2- Hash password, 3- callback(err,isMatch{boolean})
+    // bcrypt.compare(req.body.password,user.password, (err,isMatch) =>{ //arguments : 1- passowrd user is passing,2- Hash password, 3- callback(err,isMatch{boolean})
+    //     if (err) throw err;
+    //     if (!isMatch){
+    //         res.json({message:'Password is not matching'});
+    //     } else {
+    //         res.status(200).send(isMatch)
+    //     }
+    // }) 
+
+    user.comparePassword(req.body.password,function(err,isMatch){
         if (err) throw err;
-        if (!isMatch){
-            res.json({message:'Password is not matching'});
-        } else {
-            res.status(200).send(isMatch)
-        }
-    }) 
+        if (!isMatch) return res.json({message:'wrong password'})
+
+        res.status(200).send(isMatch)
+
+    })
     })
 })
 

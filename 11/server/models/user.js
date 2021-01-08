@@ -37,7 +37,12 @@ if (user.isModified('password')){ //isModified is to check if the password or th
 })
 
 //comparePassword= whetever name can be // cb- callback
-
+userSchema.methods.comparePassword = function(candidatePassword,cb){
+    bcrypt.compare(candidatePassword, this.password, function(err,isMatch){ //this.password- hash password, inside database
+        if(err) return cb(err); 
+        cb(null,isMatch) //it gonna be true
+    }) 
+}
 
 //Include User to the schema
 const User = mongoose.model('User', userSchema);
