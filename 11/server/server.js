@@ -24,7 +24,11 @@ app.post('/api/user',(req,res)=>{
     });
     user.save((err,doc)=>{
         if(err) res.status(400).send(err); // err-retorna se há algum erro; doc- retorna o body 
-        res.status(200).send(doc)
+        //res.status(200).send(doc)
+        user.generateToken((err,user)=>{
+            if(err) res.status(400).send(err);
+            res.header('x-token', user.token).send(user)
+        })
     })
 });
 
@@ -47,7 +51,9 @@ app.post('/api/user/login',(req,res)=>{
         if (err) throw err;
         if (!isMatch) return res.json({message:'wrong password'})
 
-        res.status(200).send(isMatch)
+        user.generateToken((err,user)=>{
+            res.header('x-token',user.token).send(user)    // to set a custom header, use use "x-name" , 2nd argument is the contetnts of this header
+        })
 
     })
     })

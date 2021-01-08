@@ -2,6 +2,7 @@
 
 const mongoose = require ('mongoose');
 const bcrypt = require ('bcrypt');
+const jwt = require('jsonwebtoken');
 const SALT_I= 10;
 
 const userSchema = mongoose.Schema({
@@ -15,6 +16,10 @@ const userSchema = mongoose.Schema({
         type:String,
         require:true,
         minlength:6
+    },
+    token:{
+        type:String,
+        require:true
     }
 });
 
@@ -44,6 +49,17 @@ userSchema.methods.comparePassword = function(candidatePassword,cb){
     }) 
 }
 
+
+userSchema.methods.generateToken = function (cb){
+    let user= this;
+    let token = jwt.sign(user._id.toHexString(),'supersecret');
+    
+    user.token = token;
+    user.save((err,user)=>{
+        if (err) return cb(err);
+        cb(null,user)
+    })
+}
 //Include User to the schema
 const User = mongoose.model('User', userSchema);
 module.exports = {User}
