@@ -59,6 +59,18 @@ app.post('/api/user/login',(req,res)=>{
     })
 })
 
+//GET
+app.get('/user/profile',(req,res)=>{
+    //res.status(200).send('working')
+    const token = req.header('x-token');
+
+    User.findByToken(token,(err,user)=>{
+        if (err) throw err;
+        if(!user) return res .status(400).send()
+
+        res.status(200).send(user) // in real life we dont send back the user data 
+    })
+})
 
 app.listen(port,()=>{
     console.log(`started on port ${port}`)

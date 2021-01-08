@@ -60,6 +60,19 @@ userSchema.methods.generateToken = function (cb){
         cb(null,user)
     })
 }
+
+userSchema.statics.findByToken = function(token,cb){
+    const user = this; //acess the database
+
+    jwt.verify(token,'supersecret',(err,decode)=>{ //decode- actual user id
+        //findOne - find a record or document on the database
+        user.findOne({'_id':decode, 'token':token},(err,user)=>{
+            if (err) return cb(err);
+            cb(null,user) 
+        }) 
+    })
+}
+
 //Include User to the schema
 const User = mongoose.model('User', userSchema);
 module.exports = {User}
