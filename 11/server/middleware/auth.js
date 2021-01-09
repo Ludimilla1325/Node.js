@@ -7,7 +7,8 @@ let auth = (req,res,next) =>{
         if (err) throw err;
         if(!user) return res .status(400).send()
 
-        req.token = token
+        req.token = token;
+        req.user = user;
         next()
     })
 }

@@ -3,6 +3,7 @@
 const mongoose = require ('mongoose');
 const bcrypt = require ('bcrypt');
 const jwt = require('jsonwebtoken');
+const config = require('./../config/config').get(process.env.NODE_ENV)
 const SALT_I= 10;
 
 const userSchema = mongoose.Schema({
@@ -52,7 +53,7 @@ userSchema.methods.comparePassword = function(candidatePassword,cb){
 
 userSchema.methods.generateToken = function (cb){
     let user= this;
-    let token = jwt.sign(user._id.toHexString(),'supersecret');
+    let token = jwt.sign(user._id.toHexString(),config.SECRET);
     
     user.token = token;
     user.save((err,user)=>{
@@ -64,7 +65,7 @@ userSchema.methods.generateToken = function (cb){
 userSchema.statics.findByToken = function(token,cb){
     const user = this; //acess the database
 
-    jwt.verify(token,'supersecret',(err,decode)=>{ //decode- actual user id
+    jwt.verify(token,config.SECRET,(err,decode)=>{ //decode- actual user id
         //findOne - find a record or document on the database
         user.findOne({'_id':decode, 'token':token},(err,user)=>{
             if (err) return cb(err);
@@ -72,6 +73,17 @@ userSchema.statics.findByToken = function(token,cb){
         }) 
     })
 }
+
+
+userSchema.methods.deleteToken = function (token,cb){
+    const user = this;
+    //unset will remove that entry from the documents
+    user.update({$unset:{token:1}},(err,user)=>{
+        if (err) return cb(err);
+        cb(null,user) 
+    })
+}
+
 
 //Include User to the schema
 const User = mongoose.model('User', userSchema);

@@ -2,14 +2,15 @@ const express = require ('express');
 const bodyParser = require ('body-parser');
 const mongoose = require ('mongoose');
 const bcrypt = require ('bcrypt');
+const config = require('./config/config').get(process.env.NODE_ENV)// inside heroku by default is going to be production
 
 const app= express();
-const port = process.env.PORT || 3000;
+//const port = process.env.PORT || 3000;
 
 //DB
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/auth')
+mongoose.connect(config.DATABASE)
 
 //Require the module
 const {User} = require('./models/user');
@@ -66,6 +67,14 @@ app.get('/user/profile',auth,(req,res)=>{
     res.status(200).send(req.token);
    })
 
-app.listen(port,()=>{
-    console.log(`started on port ${port}`)
+app.delete('/user/logout',auth,(req,res)=>{
+    //res.send(req.user)
+    req.user.deleteToken(req.token,(err,user)=>{
+        if (err) res.status(400).send(err);
+        res.status(200).send()
+    });
+})
+
+app.listen(config.PORT,()=>{
+    console.log(`started on port ${config.PORT}`)
 })
