@@ -43,7 +43,10 @@ app.post('/api/uploads',(req, res) =>{
 
         }
     
-    }).array('image',10); //the 2nd argument is the amount
+    }).fields([
+        {name:'image', maxCount:2},
+        {name:'image2',maxCount:10}
+    ]);
 
    upload(req,res,function(err){
     console.log(req.body)
