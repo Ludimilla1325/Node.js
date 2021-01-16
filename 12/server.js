@@ -22,13 +22,22 @@ app.get('/', (req, res) => {
     res.render('home')
 });
 
+
+const storage = multer.diskStorage({
+    destination:(req,file,cb)=>{ // destination gonna take the request, the actual file that is processing and the callback
+        cb(null,'uploads/')
+    },
+    filename:(req,file,cb) =>{
+      cb(null,`${file.fieldname}_${Date.now()}_${file.originalname}`)  // the original name has the extension
+    }
+})
 //Configuration - 1- destine , 2- single file
 
 
 app.post('/api/uploads',(req, res) =>{
 
     const upload = multer({
-        dest:'uploads/',
+        storage,
         limits:{fileSize:500000000},
         fileFilter:(req,file,cb)=>{
             //console.log(file)
