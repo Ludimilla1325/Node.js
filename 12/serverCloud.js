@@ -44,9 +44,9 @@ app.post('/api/uploads',(req, res) =>{
         res.status(200).send('ok');
     },{
         public_id:`${Date.now()}_${path.parse(req.files.image.name).name}`,
-        width:200,
-        height:200,
-        crop:"scale",
+       transformation:[
+           {width:400,height:400,gravity:"face",crop:"crop"}
+       ],
         resource_type:'auto'
     })
 })
