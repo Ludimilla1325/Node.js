@@ -38,12 +38,17 @@ app.post('/api/uploads',(req, res) =>{
     
     // console.log(req.fields);
     // console.log(req.files);
-
+//First argument is the actual file,the path. 2- Callback, 2- The options
     cloudinary.uploader.upload(req.files.image.path,(result)=>{
         console.log(result)
+        res.status(200).send('ok');
+    },{
+        public_id:`${Date.now()}_${path.parse(req.files.image.name).name}`,
+        width:200,
+        height:200,
+        crop:"scale",
+        resource_type:'auto'
     })
-
-    res.status(200).send('ok');
 })
 
 app.listen(port,()=>{
