@@ -36,8 +36,13 @@ app.get('/', (req, res) => {
 //POST
 app.post('/api/uploads',(req, res) =>{
     
-    console.log(req.fields);
-    console.log(req.files);
+    // console.log(req.fields);
+    // console.log(req.files);
+
+    cloudinary.uploader.upload(req.files.image.path,(result)=>{
+        console.log(result)
+    })
+
     res.status(200).send('ok');
 })
 
