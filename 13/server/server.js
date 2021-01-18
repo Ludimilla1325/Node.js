@@ -17,14 +17,13 @@ io.on('connection',(socket)=>{
         console.log('New message',newMessage);
 
         //EMIT- we want emit something, BROADCAST- we gonna send the messages to users that is chatting with you
-        socket.emit('newMessage',{ //with io u send message to everybody and with socket, just to a socket
+        socket.broadcast.emit('newMessage',{ //with io u send message to everybody and with socket, just to a socket
         from:"anita",
         message:"Im a crazy message"  
-    },()=>{
-        console.log('message received')
     });
 
-    cb()
+    cb('ok')
+    
     })
 
     socket.on('disconnect',()=>{
