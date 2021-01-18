@@ -13,18 +13,27 @@ app.use(express.static(__dirname + '/../public'));
 io.on('connection',(socket)=>{
     console.log('someone is connected');
 
-    socket.on('sendMess',(newMessage,cb)=>{
-        console.log('New message',newMessage);
+    socket.on('join',(data)=>{
+        console.log(data)
 
-        //EMIT- we want emit something, BROADCAST- we gonna send the messages to users that is chatting with you
-        socket.broadcast.emit('newMessage',{ //with io u send message to everybody and with socket, just to a socket
-        from:"anita",
-        message:"Im a crazy message"  
+        socket.join("room-" + data.room);
+
+        socket.broadcast.to("room-" + data.room).emit('userJoined',`${data.user} joined the room`);
     });
 
-    cb('ok')
+
+    // socket.on('sendMess',(newMessage,cb)=>{
+    //     console.log('New message',newMessage);
+
+    //     //EMIT- we want emit something, BROADCAST- we gonna send the messages to users that is chatting with you
+    //     socket.broadcast.emit('newMessage',{ //with io u send message to everybody and with socket, just to a socket
+    //     from:"anita",
+    //     message:"Im a crazy message"  
+    // });
+
+    // cb('ok')
     
-    })
+    // })
 
     socket.on('disconnect',()=>{
         console.log('User disconnected from server')
