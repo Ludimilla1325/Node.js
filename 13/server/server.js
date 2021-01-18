@@ -13,6 +13,16 @@ app.use(express.static(__dirname + '/../public'));
 io.on('connection',(socket)=>{
     console.log('someone is connected');
 
+    //when u use emit, we r emitting something we gonna trigger something
+    socket.emit('newMessage',{
+        from:"anita",
+        message:"Im a crazy message"
+    });
+
+    socket.on('sendMess',(newMessage)=>{
+        console.log('New message',newMessage)
+    })
+
     socket.on('disconnect',()=>{
         console.log('User disconnected from server')
     })
