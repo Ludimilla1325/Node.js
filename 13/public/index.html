@@ -18,14 +18,18 @@
             console.log('connected to server')
        
             //Custom Event
-            socket.on('newMessage', function(message){
+            socket.on('newMessage', function(message,cb){
                 console.log('Message received', message)
+
+                cb()
             })
 
             $('.send_message').on('click', function(){
                 socket.emit('sendMess',{
                 from:"James",
-                message:"Hello, its me your looking for"
+                message:"Hello, its me your looking for..."
+                }, function(){
+                    console.log('Everything worked')
                 })
             })
 
