@@ -13,14 +13,14 @@ app.use(express.static(__dirname + '/../public'));
 io.on('connection',(socket)=>{
     console.log('someone is connected');
 
-    //when u use emit, we r emitting something we gonna trigger something
-    socket.emit('newMessage',{
-        from:"anita",
-        message:"Im a crazy message"
-    });
-
     socket.on('sendMess',(newMessage)=>{
         console.log('New message',newMessage)
+
+        //EMIT- we want emit something, BROADCAST- we gonna send the messages to users that is chatting with you
+        socket.broadcast.emit('newMessage',{ //with io u send message to everybody and with socket, just to a socket
+        from:"anita",
+        message:"Im a crazy message"
+        });
     })
 
     socket.on('disconnect',()=>{

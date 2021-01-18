@@ -3,9 +3,12 @@
     <head>
         <meta charset="utf-8">
         <body>
-            home
+            <div class="send_message" style="background: gold;padding: 10px;">
+                Send message
+            </div>
         </body>
     </head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
 
@@ -19,9 +22,11 @@
                 console.log('Message received', message)
             })
 
-            socket.emit('sendMess',{
+            $('.send_message').on('click', function(){
+                socket.emit('sendMess',{
                 from:"James",
                 message:"Hello, its me your looking for"
+                })
             })
 
             socket.on('disconnect', function(){
